@@ -1,5 +1,6 @@
 package histograma.view;
 
+import histograma.model.Histogram;
 import java.awt.Container;
 import java.awt.Dimension;
 import javax.swing.JPanel;
@@ -11,11 +12,13 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class HistogramDisplay extends ApplicationFrame{
+    private final Histogram<String> histogram;
     
-    public HistogramDisplay() {
+    
+    public HistogramDisplay(Histogram<String> histogram) {
         super("HISTOGRAMA");
+        this.histogram = histogram;
         setContentPane(createPanel());
-        
         pack();
     }
     
@@ -43,12 +46,10 @@ public class HistogramDisplay extends ApplicationFrame{
     
     private DefaultCategoryDataset createDataset(){
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(10, "", "ulpgc.es");
-        dataset.addValue(5, "", "wikileaks.es");
-        dataset.addValue(6, "", "locahost.es");
-        dataset.addValue(20, "", "humble.es");
-        dataset.addValue(10, "", "steam.com");
-        dataset.addValue(7, "", "youtube.com");
+        
+        for (String key : histogram.keySet()) {
+            dataset.addValue(histogram.get(key), "", key);
+        }
         return dataset;
     }
 }
